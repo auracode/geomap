@@ -3,6 +3,11 @@ class ClientsController < ApplicationController
   # GET /clients.json
   def index
     @clients = Client.all
+    if params[:search].present?
+      @clients = Client.near(params[:search], 50, :order => :distance)
+    else
+      @clients = Client.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
